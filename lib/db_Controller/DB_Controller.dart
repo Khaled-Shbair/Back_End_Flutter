@@ -21,8 +21,22 @@ class DBController {
       path,
       version: 1,
       onOpen: (Database db) {},
-      onCreate: (Database db, int version) {},
+      onCreate: (Database db, int version) async {
+        await db.execute('CREATE TABLE users ('
+            'id INTEGER PRIMARY KEY AUTOINCREMENT,'
+            'name TEXT,'
+            'email TEXT,'
+            'password TEXT'
+            ')');
+        await db.execute('CREATE TABLE notes ('
+            'id INTEGER PRIMARY KEY AUTOINCREMENT,'
+            'title TEXT,'
+            'details TEXT,'
+            'user_id INTEGER FOREIGN KEY REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE'
+            ')');
+      },
       onUpgrade: (Database db, int oldVersion, int newVersion) {},
+      onDowngrade: (Database db, int oldVersion, int newVersion) {},
     );
   }
 }
