@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -13,6 +12,8 @@ class DBController {
   factory DBController() {
     return _instance;
   }
+
+  Database get dataBase => _database;
 
   Future<void> initDataBase() async {
     Directory directory = await getApplicationDocumentsDirectory();
