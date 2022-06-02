@@ -1,8 +1,9 @@
+import 'package:data_base/Storage/Pref_Controller.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../models/Note.dart';
 import '../DB_Controller.dart';
 import '../DB_Operations.dart';
-import '../models/Note.dart';
 
 class DBControllerNote implements DBOperation<Note> {
   Database database = DBController().dataBase;
@@ -22,7 +23,10 @@ class DBControllerNote implements DBOperation<Note> {
 
   @override
   Future<List<Note>> read() async {
-    List<Map<String, dynamic>> rows = await database.query('notes');
+    List<Map<String, dynamic>> rows =
+        await database.query('notes', where: 'user_id = ?', whereArgs: [
+      PrefController().getKey<int>(key: prefKeys.id.toString()),
+    ]);
     List<Note> note = rows
         .map((Map<String, dynamic> rowMap) => Note.fromMap(rowMap))
         .toList();

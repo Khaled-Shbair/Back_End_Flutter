@@ -1,11 +1,22 @@
+import 'package:data_base/Storage/Pref_Controller.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../models/User.dart';
 import '../DB_Controller.dart';
 import '../DB_Operations.dart';
-import '../models/User.dart';
 
 class DBControllerUser implements DBOperation<User> {
   Database database = DBController().dataBase;
+
+  Future<bool> login({required String email, required String password}) async {
+    List<Map<String, dynamic>> maps = await database.query('users',
+        where: 'email = ? AND password = ?', whereArgs: [email, password]);
+    if (maps.isNotEmpty) {
+      User user = User.fromMap(maps.first);
+      await PrefController().save(user);
+    }
+    return maps.isNotEmpty;
+  }
 
   @override
   Future<int> create(User user) async {

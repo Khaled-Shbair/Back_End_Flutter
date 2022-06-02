@@ -4,6 +4,8 @@ class User {
   late String email;
   late String password;
 
+  User();
+
   //Read from dataBase
   User.fromMap(Map<String, dynamic> rowMap) {
     id = rowMap['id'];

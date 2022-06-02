@@ -4,6 +4,8 @@ class Note {
   late String details;
   late int userId;
 
+  Note();
+
   Note.fromMap(Map<String, dynamic> rowMap) {
     id = rowMap['id'];
     title = rowMap['title'];
