@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../DataBase/db_Controller/DB_Controller_Note.dart';
+import '../db_Controller/DB_Controller_Note.dart';
 import '../models/Note.dart';
 
 class NoteProvider extends ChangeNotifier {
@@ -9,7 +9,7 @@ class NoteProvider extends ChangeNotifier {
   bool loading = false;
 
   void read() async {
-    loading=true;
+    loading = true;
     notes = await _dbControllerNote.read();
     loading = false;
     notifyListeners();

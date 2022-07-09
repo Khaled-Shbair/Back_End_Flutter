@@ -1,8 +1,8 @@
-import 'package:data_base/Providers/note_provider.dart';
 import 'package:data_base/Utils/Helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../DataBase/Providers/note_provider.dart';
 import 'Note_Screen.dart';
 
 class NotesScreen extends StatefulWidget {
