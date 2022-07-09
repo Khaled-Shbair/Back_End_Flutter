@@ -1,10 +1,10 @@
-import 'package:data_base/Providers/note_provider.dart';
 import 'package:data_base/Storage/Pref_Controller.dart';
 import 'package:data_base/Utils/Helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/Note.dart';
+import '../../DataBase/Providers/note_provider.dart';
+import '../../DataBase/models/Note.dart';
 
 class NoteScreen extends StatefulWidget {
   const NoteScreen({Key? key, this.note}) : super(key: key);
@@ -142,7 +142,7 @@ class _NoteScreenState extends State<NoteScreen> with Helpers {
     }
     note.title = _titleEditingController.text;
     note.details = _infoEditingController.text;
-    note.userId = PrefController().getKey<int>(key: prefKeys.id.toString())!;
+    note.userId = PrefController().getKey<int>(key: PrefKeys.id.toString())!;
     return note;
   }
 

@@ -1,9 +1,9 @@
 import 'package:data_base/Storage/Pref_Controller.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../../models/User.dart';
+import '../models/User.dart';
 import '../DB_Controller.dart';
-import '../DB_Operations.dart';
+import 'DB_Operations.dart';
 
 class DBControllerUser implements DBOperation<User> {
   Database database = DBController().dataBase;
@@ -35,10 +35,9 @@ class DBControllerUser implements DBOperation<User> {
   Future<List<User>> read() async {
     List<Map<String, dynamic>> rows =
         await database.query('users'); //columns: ['id','name'],
-    List<User> user = rows
+    return rows
         .map((Map<String, dynamic> rowMap) => User.fromMap(rowMap))
         .toList();
-    return user;
   }
 
   @override

@@ -1,8 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/User.dart';
+import '../DataBase/models/User.dart';
 
-enum prefKeys { id, password, email, login }
+enum PrefKeys { id, password, email, login }
 
 class PrefController {
   static final PrefController _prefController = PrefController._();
@@ -19,15 +19,15 @@ class PrefController {
   }
 
   Future<void> save(User user) async {
-    await _sharedPreferences.setString(prefKeys.email.toString(), user.email);
+    await _sharedPreferences.setString(PrefKeys.email.toString(), user.email);
     await _sharedPreferences.setString(
-        prefKeys.password.toString(), user.password);
-    await _sharedPreferences.setInt(prefKeys.id.toString(), user.id);
-    await _sharedPreferences.setBool(prefKeys.login.toString(), true);
+        PrefKeys.password.toString(), user.password);
+    await _sharedPreferences.setInt(PrefKeys.id.toString(), user.id);
+    await _sharedPreferences.setBool(PrefKeys.login.toString(), true);
   }
 
   bool get login =>
-      _sharedPreferences.getBool(prefKeys.login.toString()) ?? false;
+      _sharedPreferences.getBool(PrefKeys.login.toString()) ?? false;
 
   Future<bool> clear() async => await _sharedPreferences.clear();
 

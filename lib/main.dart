@@ -1,9 +1,10 @@
 import 'package:data_base/DataBase/DB_Controller.dart';
 import 'package:data_base/Storage/Pref_Controller.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'Providers/note_provider.dart';
-import 'Providers/user_provider.dart';
+import 'DataBase/Providers/note_provider.dart';
+import 'DataBase/Providers/user_provider.dart';
 import 'Screen/App/Note_Screen.dart';
 import 'Screen/App/Notes_Screen.dart';
 import 'Screen/Login_Screen.dart';
@@ -14,6 +15,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await PrefController().initPrefController();
   await DBController().initDataBase();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 

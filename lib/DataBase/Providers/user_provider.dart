@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../DataBase/db_Controller/DB_Controller_User.dart';
+import '../db_Controller/DB_Controller_User.dart';
 import '../models/User.dart';
+
 
 class UserProvider extends ChangeNotifier {
   List<User> users = <User>[];

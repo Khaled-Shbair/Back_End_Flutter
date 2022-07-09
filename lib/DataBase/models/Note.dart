@@ -6,6 +6,7 @@ class Note {
 
   Note();
 
+//Read form database
   Note.fromMap(Map<String, dynamic> rowMap) {
     id = rowMap['id'];
     title = rowMap['title'];
@@ -13,6 +14,7 @@ class Note {
     userId = rowMap['user_id'];
   }
 
+//Store to database
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = <String, dynamic>{};
     map['title'] = title;
