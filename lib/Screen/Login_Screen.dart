@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../DataBase/Providers/user_provider.dart';
+import 'package:get/get.dart';
+import '../DataBase/get/user_get.dart';
 import '../Utils/Helpers.dart';
+
+//import 'package:provider/provider.dart';
+//import '../DataBase/Providers/user_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -13,6 +16,9 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> with Helpers {
   late TextEditingController _emailEditingController;
   late TextEditingController _passwordEditingController;
+
+  ///*** Get State Management ***/
+  final UserGet _controller = Get.put(UserGet());
 
   @override
   void initState() {
@@ -134,14 +140,22 @@ class _LoginScreenState extends State<LoginScreen> with Helpers {
   }
 
   Future<void> login() async {
-    bool _login = await Provider.of<UserProvider>(context).login(
+    /////////////////////////////////////////////////////////////////
+    /*** Provider State Management ***/
+    //bool _login = await Provider.of<UserProvider>(context).login(
+    //    email: _emailEditingController.text,
+    //    password: _passwordEditingController.text);
+    /////////////////////////////////////////////////////////////////
+    /*** Get State Management ***/
+    bool _login = await _controller.login(
         email: _emailEditingController.text,
         password: _passwordEditingController.text);
+    /////////////////////////////////////////////////////////////////
+
     if (_login) {
       Navigator.pushReplacementNamed(context, '/NotesScreen');
-    }else {
+    } else {
       showSnackBar(context, massage: 'Login failed, try again', erorr: true);
-
     }
   }
 }

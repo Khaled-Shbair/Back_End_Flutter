@@ -1,10 +1,11 @@
 import 'package:data_base/Storage/Pref_Controller.dart';
 import 'package:data_base/Utils/Helpers.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../../DataBase/Providers/note_provider.dart';
+import '../../DataBase/get/note_get.dart';
 import '../../DataBase/models/Note.dart';
+
+//import 'package:provider/provider.dart';
+//import '../../DataBase/Providers/note_provider.dart';
 
 class NoteScreen extends StatefulWidget {
   const NoteScreen({Key? key, this.note}) : super(key: key);
@@ -122,22 +123,32 @@ class _NoteScreenState extends State<NoteScreen> with Helpers {
         _infoEditingController.text.isNotEmpty) {
       return true;
     }
+    showSnackBar(context, massage: 'Enter required data', erorr: true);
     return false;
   }
 
   Future<void> save() async {
-    bool _saved = widget.note == null
-        ? await Provider.of<NoteProvider>(context, listen: false)
-            .create(note: note)
-        : await Provider.of<NoteProvider>(context, listen: false).update(note);
-    String message = _saved ? 'Saved successfully' : 'Saved failed';
-    showSnackBar(context, massage: message, erorr: !_saved);
-    widget.note != null ? Navigator.pop(context) : clear();
+    /////////////////////////////////////////////////////////////////
+    /*** Provider State Management ***/
+    //bool _saved = widget.note == null
+    //    ? await Provider.of<NoteProvider>(context, listen: false)
+    //        .create(note: note)
+    /////////////////////////////////////////////////////////////////
+    /*** Get State Management ***/
+    bool _save = isCreate()
+        ? await NoteGet.to.create(note: note)
+        : await NoteGet.to.updateNode(note);
+    /////////////////////////////////////////////////////////////////
+    String message = _save ? 'Saved successfully' : 'Saved failed';
+    showSnackBar(context, massage: message, erorr: !_save);
+    isCreate() ? clear() : Navigator.pop(context);
   }
+
+  bool isCreate() => widget.note == null;
 
   Note get note {
     Note note = Note();
-    if (widget.note != null) {
+    if (!isCreate()) {
       note.id = widget.note!.id;
     }
     note.title = _titleEditingController.text;

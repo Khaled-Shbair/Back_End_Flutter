@@ -1,4 +1,7 @@
+import 'package:data_base/DataBase/get/user_get.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 
 import '../DataBase/Providers/user_provider.dart';
@@ -144,8 +147,16 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
   }
 
   Future<void> register() async {
-    bool login = await Provider.of<UserProvider>(context,listen: false).create(user);
-    if (login) {
+    /////////////////////////////////////////////////////////////////
+    /*** Provider State Management ***/
+    //bool registered =
+    //    await Provider.of<UserProvider>(context, listen: false).create(user);
+    /////////////////////////////////////////////////////////////////
+    /*** Get State Management ***/
+    bool registered = await UserGet.to.create(user);
+    /////////////////////////////////////////////////////////////////
+
+    if (registered) {
       Navigator.pop(context);
     }
   }
