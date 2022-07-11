@@ -1,7 +1,10 @@
 import 'package:data_base/DataBase/DB_Controller.dart';
+import 'package:data_base/DataBase/bloc/bloc/NoteBloc.dart';
 import 'package:data_base/Storage/Pref_Controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'DataBase/bloc/states/CRUD_States.dart';
 import 'Screen/App/Note_Screen.dart';
 import 'Screen/App/Notes_Screen.dart';
 import 'Screen/Login_Screen.dart';
@@ -25,15 +28,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      initialRoute: '/LunchScreen',
-      routes: {
-        '/LunchScreen': (context) => const LunchScreen(),
-        '/LoginScreen': (context) => const LoginScreen(),
-        '/RegisterScreen': (context) => const RegisterScreen(),
-        '/NotesScreen': (context) => const NotesScreen(),
-        '/NoteScreen': (context) => const NoteScreen(),
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<NoteBloc>(create: (context) => NoteBloc(LoadingState())),
+      ],
+      child: MaterialApp(
+        initialRoute: '/LunchScreen',
+        routes: {
+          '/LunchScreen': (context) => const LunchScreen(),
+          '/LoginScreen': (context) => const LoginScreen(),
+          '/RegisterScreen': (context) => const RegisterScreen(),
+          '/NotesScreen': (context) => const NotesScreen(),
+          '/NoteScreen': (context) => const NoteScreen(),
+        },
+      ),
     );
   }
 }
