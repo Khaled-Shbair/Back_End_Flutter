@@ -10,6 +10,7 @@ class NoteBloc extends Bloc<CrudEvents, CrudState> {
     on<CreateEvent<Note>>(_createEvent);
     on<ReadEvent>(_readEvent);
     on<DeleteEvent>(_deleteEvent);
+    on<UpdateEvent>(_updateEvent);
   }
 
   final DBControllerNote _dbControllerNote = DBControllerNote();
@@ -47,5 +48,19 @@ class NoteBloc extends Bloc<CrudEvents, CrudState> {
     String massage = deleted ? 'Deleted Successfully' : 'Deleted Failed';
     emitter(ProcessState(
         massage: massage, state: deleted, processType: ProcessType.delete));
+  }
+
+  void _updateEvent(UpdateEvent event, Emitter emitter) async {
+    bool updated = await _dbControllerNote.update(event.object);
+    if (updated) {
+      int index = _notes.indexWhere((element) => element.id == event.object.id);
+      if (index != -1) {
+        _notes[index] = event.object;
+        emitter(ListReadState<Note>(list: _notes));
+      }
+    }
+    String massage = updated ? 'Updated Successfully' : 'Updated Failed';
+    emitter(ProcessState(
+        massage: massage, state: updated, processType: ProcessType.update));
   }
 }

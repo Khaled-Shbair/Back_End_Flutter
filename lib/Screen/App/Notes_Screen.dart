@@ -23,6 +23,101 @@ class _NotesScreenState extends State<NotesScreen> with Helpers {
     BlocProvider.of<NoteBloc>(context).add(ReadEvent());
   }
 
+/* Collecting Bloc Listener && BlocBuilder */
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        title: const Text(
+          'Notes',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NoteScreen(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.create, color: Colors.black),
+          ),
+        ],
+      ),
+      body: BlocConsumer<NoteBloc, CrudState>(
+        listenWhen: (previous, current) =>
+            current is ProcessState &&
+            current.processType == ProcessType.delete,
+        listener: (context, state) {
+          state as ProcessState;
+          showSnackBar(context, massage: state.massage, erorr: !state.state);
+        },
+        buildWhen: (previous, current) =>
+            current is ListReadState<Note> || current is LoadingState,
+        builder: (context, state) {
+          if (state is LoadingState) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is ListReadState && state.list.isEmpty) {
+            return ListView.builder(
+              itemCount: state.list.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            NoteScreen(note: state.list[index]),
+                      ),
+                    );
+                  },
+                  leading: const Icon(Icons.note),
+                  title: Text(state.list[index].title),
+                  subtitle: Text(state.list[index].details),
+                  trailing: IconButton(
+                      onPressed: () {
+                        BlocProvider.of<NoteBloc>(context).add(
+                          DeleteEvent(index: index),
+                        );
+                      },
+                      icon: const Icon(Icons.delete)),
+                );
+              },
+            );
+          } else {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                Icon(
+                  Icons.warning,
+                  size: 80,
+                ),
+                Text(
+                  'NO DATA',
+                  style: TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black45,
+                  ),
+                ),
+              ],
+            );
+          }
+        },
+      ),
+    );
+  }
+/*
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,6 +213,7 @@ class _NotesScreenState extends State<NotesScreen> with Helpers {
       ),
     );
   }
+  */
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

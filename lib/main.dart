@@ -4,6 +4,13 @@ import 'package:data_base/Storage/Pref_Controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'API/screen/forget_password_screen.dart';
+import 'API/screen/login_screen.dart';
+import 'API/screen/lunch_screen.dart';
+import 'API/screen/register_screen.dart';
+import 'API/screen/reset_password_screen.dart';
+import 'API/screen/user_screen.dart';
+import 'API/storage/shared_pref_controller.dart';
 import 'DataBase/bloc/states/CRUD_States.dart';
 import 'Screen/App/Note_Screen.dart';
 import 'Screen/App/Notes_Screen.dart';
@@ -17,7 +24,8 @@ import 'Screen/Register_Screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await PrefController().initPrefController();
+  //await PrefController().initPrefController();
+  await SharedPrefController().initSharedPref();
   await DBController().initDataBase();
   await Firebase.initializeApp();
   runApp(const MyApp());
@@ -33,13 +41,21 @@ class MyApp extends StatelessWidget {
         BlocProvider<NoteBloc>(create: (context) => NoteBloc(LoadingState())),
       ],
       child: MaterialApp(
-        initialRoute: '/LunchScreen',
+        initialRoute: '/LunchApiScreen',
         routes: {
           '/LunchScreen': (context) => const LunchScreen(),
           '/LoginScreen': (context) => const LoginScreen(),
           '/RegisterScreen': (context) => const RegisterScreen(),
           '/NotesScreen': (context) => const NotesScreen(),
           '/NoteScreen': (context) => const NoteScreen(),
+          //////////////////////////////////////////////
+          /** API Screen **/
+          '/LunchApiScreen': (context) => const LunchApiScreen(),
+          '/LoginApiScreen': (context) => const LoginApiScreen(),
+          '/RegisterApiScreen': (context) => const RegisterApiScreen(),
+          '/ForgetPasswordApiScreen': (context) =>
+              const ForgetPasswordApiScreen(),
+          '/UserScreen': (context) => const UserScreen(),
         },
       ),
     );

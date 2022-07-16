@@ -151,7 +151,6 @@ class _LoginScreenState extends State<LoginScreen> with Helpers {
         email: _emailEditingController.text,
         password: _passwordEditingController.text);
     /////////////////////////////////////////////////////////////////
-
     if (_login) {
       Navigator.pushReplacementNamed(context, '/NotesScreen');
     } else {
