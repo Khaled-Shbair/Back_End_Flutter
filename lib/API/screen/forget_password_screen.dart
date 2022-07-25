@@ -107,13 +107,19 @@ class _ForgetPasswordApiScreenState extends State<ForgetPasswordApiScreen>
   }
 
   Future<void> _forgetPassword() async {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ResetPasswordApiScreen(
-          email: _emailEditingController.text,
+    ApiResponse apiResponse = await AuthApiController()
+        .forgetPassword(email: _emailEditingController.text);
+    showSnackBar(context,
+        massage: apiResponse.massage, erorr: !apiResponse.status);
+    if (apiResponse.status) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResetPasswordApiScreen(
+            email: _emailEditingController.text,
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

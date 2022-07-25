@@ -1,14 +1,11 @@
 import 'package:data_base/DataBase/DB_Controller.dart';
 import 'package:data_base/DataBase/bloc/bloc/NoteBloc.dart';
-import 'package:data_base/Storage/Pref_Controller.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'API/screen/forget_password_screen.dart';
 import 'API/screen/login_screen.dart';
 import 'API/screen/lunch_screen.dart';
 import 'API/screen/register_screen.dart';
-import 'API/screen/reset_password_screen.dart';
 import 'API/screen/user_screen.dart';
 import 'API/storage/shared_pref_controller.dart';
 import 'DataBase/bloc/states/CRUD_States.dart';
@@ -18,6 +15,7 @@ import 'Screen/Login_Screen.dart';
 import 'Screen/Lunch_Screen.dart';
 import 'Screen/Register_Screen.dart';
 
+//import 'package:data_base/Storage/Pref_Controller.dart';
 //import 'package:provider/provider.dart';
 //import 'DataBase/Providers/note_provider.dart';
 //import 'DataBase/Providers/user_provider.dart';
@@ -27,7 +25,6 @@ void main() async {
   //await PrefController().initPrefController();
   await SharedPrefController().initSharedPref();
   await DBController().initDataBase();
-  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 

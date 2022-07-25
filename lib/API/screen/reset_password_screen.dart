@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../Utils/Helpers.dart';
+import '../api/controllers/auth_api_controller.dart';
+import '../models/api_response.dart';
 
 class ResetPasswordApiScreen extends StatefulWidget {
   const ResetPasswordApiScreen({Key? key, required this.email})
@@ -229,13 +231,17 @@ class _ResetPasswordApiScreenState extends State<ResetPasswordApiScreen>
   }
 
   Future<void> _resetPassword() async {
-    //  ApiResponse apiResponse = await AuthApiController()
-    //  showSnackBar(context,
-    //      massage: apiResponse.massage, erorr: !apiResponse.status);
-//
-    //  if (apiResponse.status) {
-    //    Navigator.pushReplacementNamed(context, '/UserScreen');
-    //  }
+    ApiResponse apiResponse = await AuthApiController().resetPassword(
+      email: widget.email,
+      code: code,
+      password: _newPasswordEditingController.text,
+    );
+    showSnackBar(context,
+        massage: apiResponse.massage, erorr: !apiResponse.status);
+
+    if (apiResponse.status) {
+      Navigator.pop(context);
+    }
   }
 }
 

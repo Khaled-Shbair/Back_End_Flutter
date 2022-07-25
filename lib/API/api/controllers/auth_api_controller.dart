@@ -2,6 +2,7 @@
  عمليات المصادقة على تسجيل الدخول و تسجيل الخروج المسجلين في API
  ويتم من خلال حغظ Token في SharedPrefController
   */
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -46,6 +47,7 @@ class AuthApiController {
     });
     if (response.statusCode == 200 || response.statusCode == 401) {
       var jsonResponse = jsonDecode(response.body);
+      unawaited(SharedPrefController().clear());
       if (response.statusCode == 200) {
         return ApiResponse(
             massage: jsonResponse['message'], status: jsonResponse['status']);
@@ -66,6 +68,43 @@ class AuthApiController {
       'gender': student.gender,
     });
     if (response.statusCode == 201 || response.statusCode == 400) {
+      var jsonResponse = jsonDecode(response.body);
+      return ApiResponse(
+          massage: jsonResponse['message'], status: jsonResponse['status']);
+    }
+    return ApiResponse(
+        massage: 'Something went wrong, try again', status: false);
+  }
+
+  Future<ApiResponse> forgetPassword({required String email}) async {
+    var url = Uri.parse(ApiSetting.forgetPassword);
+    var response = await http.post(url, body: {'email': email});
+    if (response.statusCode == 200 || response.statusCode == 400) {
+      var jsonResponse = jsonDecode(response.body);
+      ////////////////////////////////////////////
+      if (response.statusCode == 200) {
+        print('Code = ${jsonResponse['code']}');
+      } // Test only
+      ////////////////////////////////////////////
+      return ApiResponse(
+          massage: jsonResponse['message'], status: jsonResponse['status']);
+    }
+    return ApiResponse(
+        massage: 'Something went wrong, try again', status: false);
+  }
+
+  Future<ApiResponse> resetPassword(
+      {required String email,
+      required String code,
+      required String password}) async {
+    var url = Uri.parse(ApiSetting.resetPassword);
+    var response = await http.post(url, body: {
+      'email': email,
+      'code': code,
+      'password': password,
+      'password_confirmation': password,
+    });
+    if (response.statusCode == 200 || response.statusCode == 400) {
       var jsonResponse = jsonDecode(response.body);
       return ApiResponse(
           massage: jsonResponse['message'], status: jsonResponse['status']);
